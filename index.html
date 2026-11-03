@@ -1611,10 +1611,119 @@ document.getElementById('nav').addEventListener('click',e=&gt;{if(e.target.close
 <!-- BET LAB MIDNIGHT SKYLINE: visual-only assets. Original app scripts/data unchanged. -->
 <link rel="stylesheet" href="./vibe-purple-gold.css?v=20261102a">
 <link rel="stylesheet" href="./betlab-theme.css?v=preview1">
-<link rel="stylesheet" href="./stitch-shell.css?v=task0048">
+<!-- Tailwind CSS CDN with Forms & Container Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Fonts: Inter & JetBrains Mono for High-Density Financial Dashboard -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script>window.tailwind = window.tailwind || {};</script>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            dark: {
+              950: '#07050d',
+              900: '#0b0814',
+              850: '#100c1d',
+              800: '#140f24',
+              700: '#1c1630',
+              600: '#261f3e',
+            },
+            neon: {
+              green: '#39FF88',
+              'green-glow': '#10b981',
+              lime: '#39ff14',
+              purple: '#b026ff',
+              magenta: '#d91680',
+              cyan: '#00f0ff',
+              amber: '#f59e0b',
+              orange: '#ff6b00',
+            }
+          }
+        }
+      }
+    }
+  </script>
+<!-- BEGIN: Custom CSS Styling Blocks -->
+<style data-purpose="custom-scrollbars-and-reset">
+    * {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+    body {
+      background-color: #07050d;
+      color: #e2e8f0;
+      overflow-x: hidden;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0814;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #261f3e;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3b2f5d;
+    }
+  </style>
+<style data-purpose="glowing-accents-and-glass">
+    .glass-panel {
+      background: rgba(16, 12, 29, 0.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .neon-border-green {
+      border: 1px solid rgba(57, 255, 136, 0.4);
+      box-shadow: 0 0 15px -3px rgba(57, 255, 136, 0.25), inset 0 0 12px -3px rgba(57, 255, 136, 0.15);
+    }
+    .neon-border-purple {
+      border: 1px solid rgba(176, 38, 255, 0.4);
+      box-shadow: 0 0 15px -3px rgba(176, 38, 255, 0.25), inset 0 0 12px -3px rgba(176, 38, 255, 0.15);
+    }
+    .neon-border-orange {
+      border: 1px solid rgba(255, 107, 0, 0.4);
+      box-shadow: 0 0 15px -3px rgba(255, 107, 0, 0.25), inset 0 0 12px -3px rgba(255, 107, 0, 0.15);
+    }
+    .neon-border-cyan {
+      border: 1px solid rgba(57, 255, 136, 0.4);
+      box-shadow: 0 0 15px -3px rgba(57, 255, 136, 0.25), inset 0 0 12px -3px rgba(57, 255, 136, 0.15);
+    }
+    .neon-text-green {
+      text-shadow: 0 0 12px rgba(57, 255, 136, 0.65), 0 0 24px rgba(57, 255, 136, 0.35);
+    }
+    .neon-text-purple {
+      text-shadow: 0 0 12px rgba(176, 38, 255, 0.65), 0 0 24px rgba(176, 38, 255, 0.35);
+    }
+    .neon-text-amber {
+      text-shadow: 0 0 12px rgba(255, 107, 0, 0.65), 0 0 24px rgba(255, 107, 0, 0.35);
+    }
+    .hero-glow-ring {
+      background: radial-gradient(ellipse at center, rgba(57, 255, 136, 0.22) 0%, rgba(176, 38, 255, 0.16) 45%, rgba(0, 0, 0, 0) 70%);
+    }
+    .hologram-grid {
+      background-size: 32px 32px;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    }
+  </style>
+<!-- END: Custom CSS Styling Blocks -->
+<link rel="stylesheet" href="./stitch-app.css?v=phase2">
 <script src="./vibe-purple-gold.js?v=20261102a" defer=""></script>
 <script src="./slip-parser.js?v=preview1"></script>
 <script src="./betlab-enhance.js?v=preview1" defer=""></script>
 <script src="./polymarket-us.js?v=preview1" defer=""></script>
-<script src="./stitch-shell.js?v=task0048" defer=""></script>
+<script src="./stitch-app.js?v=phase2" defer=""></script>
 </files.length;i++){></lines.length;i++){></files.length;i++){></lines.length;i++){></files.length;i++){></lines.length;i++){></body></html>

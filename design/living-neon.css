@@ -1,0 +1,30 @@
+/* Bet Lab living neon — isolated design proof, not loaded by production or preview. */
+:root{color-scheme:dark;--purple:#df2cff;--orange:#ff7819;--gold:#ffd45b;--green:#62ff83}
+*{box-sizing:border-box}body{margin:0;background:#07040e;color:#f8f0ff;font:15px system-ui,sans-serif}
+.scene{min-height:100vh;padding:24px;background:radial-gradient(ellipse at 55% 0%,#48104566,transparent 52%),#07040e}
+.header{padding:20px 24px;border:1px solid #c333ee;border-radius:18px;background:#12091b;box-shadow:0 0 30px #a72d9944;display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap}
+.logo{font-size:clamp(25px,4vw,42px);font-weight:900;font-style:italic;background:linear-gradient(100deg,#f4b9ff,#e92cff 40%,#ff7c13 70%,#ffd75e);background-clip:text;color:transparent;text-shadow:0 0 26px #ff631744}
+nav{display:flex;gap:10px;flex-wrap:wrap}nav span{border:1px solid #a638bf77;border-radius:9px;padding:9px 12px;font-size:12px}nav .active{box-shadow:0 0 17px #b52aff99;background:#53116c}
+.grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(240px,1fr);gap:18px;margin-top:22px}
+.panel{background:linear-gradient(150deg,#190923,#0b0714);border:1px solid #bb2ce5;border-radius:18px;padding:18px;box-shadow:0 0 24px #ae21de44,inset 0 0 18px #ff751112}
+h2{font-size:17px;margin:0 0 12px} .chart{position:relative;height:clamp(260px,36vw,440px);overflow:hidden;border-radius:12px;background:linear-gradient(180deg,#10071b,#160821)}
+.chart svg{position:absolute;inset:0;width:100%;height:100%}
+.chart .atmosphere{animation:drift 7s ease-in-out infinite alternate;transform-origin:center}
+.chart .underglow{animation:undulate 5s ease-in-out infinite alternate;transform-origin:50% 90%}
+.chart .halo{animation:breathe 3.8s ease-in-out infinite}
+.chart .data-line{animation:lineBreath 3.8s ease-in-out infinite}
+.chart .spark{animation:flow 9s linear infinite}
+@keyframes drift{from{transform:translate(-13px,8px)}to{transform:translate(15px,-12px)}}
+@keyframes undulate{from{transform:translate(-10px,5px) scaleY(.92);opacity:.52}to{transform:translate(10px,-9px) scaleY(1.08);opacity:.9}}
+@keyframes breathe{0%,100%{opacity:.45}50%{opacity:1}}
+@keyframes lineBreath{0%,100%{opacity:.85;stroke-width:3.3}50%{opacity:1;stroke-width:4.2}}
+@keyframes flow{to{stroke-dashoffset:-180}}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+.stat{border:1px solid #ba32ec;border-radius:12px;padding:14px;background:#170b20;box-shadow:inset 0 0 15px #ad2aff22}
+.stat strong{display:block;font-size:clamp(18px,2vw,28px);margin-top:8px;color:var(--green)}
+.stat:nth-child(1) strong{color:var(--gold)}.stat:nth-child(3) strong{color:#f5d9ff}
+.stat small{color:#d2b5d9;font-size:11px;letter-spacing:.08em}
+.radar{display:grid;gap:12px}.radar article{border:1px solid #a42cc377;padding:16px;border-radius:12px;background:#190b26;box-shadow:0 0 13px #f0641922}
+.radar article b{color:var(--gold)}.foot{margin-top:14px;color:#bda4c9;font-size:12px}
+@media(max-width:760px){.scene{padding:10px}.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.header{padding:14px}.chart{height:300px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}

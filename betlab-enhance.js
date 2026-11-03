@@ -2,7 +2,9 @@
  * - Adds Sportsbooks + Scout pages and an Add Bet nav action.
  * - Animated rolling numbers on Win/Lose via a renderDashboard wrapper.
  * - Gentle chart re-animation while Analytics is open.
- * - Polymarket read-only auto-import (wallet ships EMPTY), Kalshi connector
+ * - Polymarket .com wallet import RETIRED (Polymarket shut down its public
+ *   positions endpoint — it answers HTTP 410 Gone; the account connects via
+ *   the Polymarket US API import in polymarket-us.js), Kalshi connector
  *   structure (key ships EMPTY, disabled), Novig labelled slip-upload only.
  * Nothing here changes the sync module, the storage key, or persist(). */
 (function () {
@@ -28,11 +30,11 @@
        ['Kalshi', 'https://kalshi.com/', 'One of your books · API connect below']]
         .map(function (b) { return '<a class="bl-book-tile" href="' + b[1] + '" target="_blank" rel="noopener noreferrer">' + b[0] + '<small>' + b[2] + '</small><span class="bl-open">OPEN ▸</span></a>'; }).join('') +
       '</div>' +
-      '<div class="panel bl-module" id="pmModule"><h3>◈ Polymarket — automatic import</h3>' +
-      '<p class="bl-status">Polymarket positions are public on-chain data: with your wallet address, Bet Lab can pull your open positions straight into the tracker — no password, no upload. The address stays in this browser only.</p>' +
+      '<div class="panel bl-module" id="pmModule"><h3>◈ Polymarket (.com) — wallet import retired</h3>' +
+      '<p class="bl-status">This panel used to pull .com positions by wallet address. Polymarket has shut that public positions endpoint down (it now answers HTTP 410 Gone), so wallet import is retired — an address entered here can no longer import anything, and it is never sent anywhere. Your Polymarket account is a US app account: it connects through the Polymarket US API import directly below.</p>' +
       '<div class="fields"><label>Polymarket wallet address (0x…)<input id="pmWallet" placeholder="Not set — add your wallet address" autocomplete="off" spellcheck="false"></label></div>' +
-      '<p><button class="primary" type="button" id="pmSave">Save address</button> <button class="primary" type="button" id="pmImport">Import my positions</button></p>' +
-      '<p class="bl-status" id="pmStatus">No wallet address saved yet, so nothing has been imported.</p></div>' +
+      '<p><button class="primary" type="button" id="pmSave">Save address</button> <button class="primary" type="button" id="pmImport">Import my positions (retired)</button></p>' +
+      '<p class="bl-status" id="pmStatus">Wallet import retired — use the Polymarket US API import below.</p></div>' +
       '<div class="panel bl-module" id="pmusModule"><h3>◈ Polymarket US — API import</h3>' +
       '<p class="bl-status">Your Polymarket US app account connects through a read-only proxy: positions are pulled straight into the tracker using your API Key ID. The Key ID (from polymarket.us/developer) is a public identifier — it is NOT your secret key, and the secret key must never be pasted into any web page. The Key ID stays in this browser only.</p>' +
       '<div class="fields"><label>Polymarket US API Key ID<input id="pmusKeyId" placeholder="Not set — paste your Key ID" autocomplete="off" spellcheck="false"></label></div>' +
@@ -159,61 +161,32 @@
     }, 5000);
   }
 
-  /* ---------------- Polymarket auto-import ---------------- */
-  function pmToBet(pos) {
-    var stake = round2(Number(pos.initialValue)), size = Number(pos.size);
-    if (!(stake > 0) || !(size > 0)) return null;
-    var title = String(pos.title || 'Polymarket position'), outcome = String(pos.outcome || '');
-    var avg = Number(pos.avgPrice), odds = 0;
-    if (avg > 0 && avg < 1) odds = avg >= 0.5 ? -Math.round(100 * avg / (1 - avg)) : Math.round(100 * (1 - avg) / avg);
-    return {
-      game: title, selection: title + (outcome ? ' — ' + outcome : ''),
-      book: 'Polymarket', sport: 'NFL', stake: stake, payout: round2(size), odds: odds,
-      status: 'Open', source: 'Polymarket API import',
-      ticket: 'PM-' + String(pos.conditionId || '').slice(0, 10) + '-' + (pos.outcomeIndex != null ? pos.outcomeIndex : ''),
-      legs: [title + (outcome ? ' ' + outcome : '')], importedAt: new Date().toISOString()
-    };
-  }
+  /* ---------------- Polymarket .com wallet import — RETIRED ----------------
+   * The legacy importer pulled .com positions from Polymarket's public
+   * wallet positions endpoint. Polymarket has shut that endpoint down
+   * (it answers HTTP 410 Gone), so the path is retired: this panel keeps
+   * its browser-storage behaviour for any previously saved address, but
+   * the Import action performs NO network call and imports nothing — it
+   * explains the retirement and points at the live path, the Polymarket
+   * US API import (polymarket-us.js), which is how the account connects. */
   function wirePolymarket() {
     var input = $('pmWallet'), status = $('pmStatus');
     if (!input || !status) return;
     var saved = '';
     try { saved = localStorage.getItem(LS_PM) || ''; } catch (e) { /* storage unavailable */ }
     input.value = saved;
-    if (saved) status.textContent = 'Wallet address saved in this browser. Tap "Import my positions" to pull your open Polymarket positions.';
+    if (saved) status.textContent = 'Wallet address saved in this browser from before the retirement. It is never sent anywhere now — the Polymarket US API import below is the live path.';
     $('pmSave').addEventListener('click', function () {
       var v = input.value.trim();
       if (v && !/^0x[0-9a-fA-F]{40}$/.test(v)) { status.textContent = 'That does not look like a wallet address (expected 0x + 40 hex characters). Nothing saved.'; return; }
       try { if (v) localStorage.setItem(LS_PM, v); else localStorage.removeItem(LS_PM); } catch (e) { /* ignore */ }
       status.textContent = v ? 'Wallet address saved in this browser only.' : 'Wallet address cleared.';
     });
-    $('pmImport').addEventListener('click', async function () {
+    $('pmImport').addEventListener('click', function () {
       var addr = input.value.trim();
       if (!addr) { status.textContent = 'Add your Polymarket wallet address first — this field ships empty on purpose. Your address is public on-chain info, not a password.'; return; }
       if (!/^0x[0-9a-fA-F]{40}$/.test(addr)) { status.textContent = 'That does not look like a wallet address (expected 0x + 40 hex characters).'; return; }
-      status.textContent = 'Contacting Polymarket…';
-      try {
-        var r = await fetch('https://data-api.polymarket.com/positions?user=' + encodeURIComponent(addr) + '&sizeThreshold=0&limit=100', { cache: 'no-store' });
-        if (!r.ok) throw new Error('Polymarket API answered HTTP ' + r.status);
-        var rows = await r.json();
-        if (!Array.isArray(rows)) throw new Error('unexpected API response');
-        var added = 0, skipped = 0;
-        for (var i = 0; i < rows.length; i++) {
-          var bet = pmToBet(rows[i]);
-          if (!bet) { skipped++; continue; }
-          var dupe = (typeof bets !== 'undefined') && bets.some(function (b) {
-            return (bet.ticket && b.ticket && b.ticket === bet.ticket) ||
-              (b.book === 'Polymarket' && b.selection === bet.selection && Number(b.stake) === bet.stake);
-          });
-          if (dupe) { skipped++; continue; }
-          if (typeof saveBet === 'function' && saveBet(bet)) added++; else { skipped++; }
-        }
-        status.textContent = rows.length === 0
-          ? 'Polymarket returned no open positions for that wallet. Nothing imported.'
-          : 'Import complete: ' + added + ' new position(s) added, ' + skipped + ' skipped (duplicates or unmappable). Review them in Bet Tracker — settle each with Win/Lose as results land.';
-      } catch (e) {
-        status.textContent = 'Polymarket import failed: ' + e.message + '. Nothing was added and no records were changed.';
-      }
+      status.textContent = 'Polymarket retired the public wallet positions endpoint (it answers HTTP 410 Gone now), so .com wallet import is retired in Bet Lab. Your Polymarket account connects via the Polymarket US API import below — nothing was imported and no records were changed.';
     });
   }
 

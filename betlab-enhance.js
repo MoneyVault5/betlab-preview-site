@@ -33,6 +33,11 @@
       '<div class="fields"><label>Polymarket wallet address (0x…)<input id="pmWallet" placeholder="Not set — add your wallet address" autocomplete="off" spellcheck="false"></label></div>' +
       '<p><button class="primary" type="button" id="pmSave">Save address</button> <button class="primary" type="button" id="pmImport">Import my positions</button></p>' +
       '<p class="bl-status" id="pmStatus">No wallet address saved yet, so nothing has been imported.</p></div>' +
+      '<div class="panel bl-module" id="pmusModule"><h3>◈ Polymarket US — API import</h3>' +
+      '<p class="bl-status">Your Polymarket US app account connects through a read-only proxy: positions are pulled straight into the tracker using your API Key ID. The Key ID (from polymarket.us/developer) is a public identifier — it is NOT your secret key, and the secret key must never be pasted into any web page. The Key ID stays in this browser only.</p>' +
+      '<div class="fields"><label>Polymarket US API Key ID<input id="pmusKeyId" placeholder="Not set — paste your Key ID" autocomplete="off" spellcheck="false"></label></div>' +
+      '<p><button class="primary" type="button" id="pmusSave">Save Key ID</button> <button class="primary" type="button" id="pmusImport">Import positions</button></p>' +
+      '<p class="bl-status" id="pmusStatus">No Key ID saved yet, so nothing has been imported.</p></div>' +
       '<div class="panel bl-module" id="kalshiModule"><h3>◈ Kalshi — API connection</h3>' +
       '<p class="bl-status">Kalshi API access needs an API Key ID plus RSA-signed requests. A private key must never be pasted into a web page, so the connector below is structured and ready, but stays <b>disabled</b> until a secure local signer exists. Storing a Key ID alone cannot move money or place bets.</p>' +
       '<div class="fields"><label>Kalshi API Key ID<input id="kalshiKey" placeholder="Not set" autocomplete="off" spellcheck="false"></label></div>' +

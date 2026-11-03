@@ -1,0 +1,37 @@
+/* TASK-0048 phase 2 — integration CSS ONLY.
+ * The dashboard's design comes from the Stitch replica's own Tailwind +
+ * custom styles (in index.html); this file only does app-integration
+ * work the replica never had to do: retire the legacy chrome the replica
+ * header/footer replace, hide the legacy dashboard dressing behind the
+ * replica dashboard, keep the page from sideways-scrolling, and keep the
+ * replica's router pills reachable below the xl breakpoint (the replica
+ * nav is desktop-only; the app still needs navigation on smaller
+ * screens). Semantic colors are the replica's: #39FF88 / #FF3B5C. */
+
+body.sta-on {
+  background-color: #07050d;
+  padding-bottom: 72px; /* room for the replica's fixed footer ribbon */
+  overflow-x: clip;
+}
+html:has(> body.sta-on) { overflow-x: clip; }
+
+/* legacy chrome replaced by the replica top bar / footer */
+body.sta-on .command-topbar,
+body.sta-on .hero,
+body.sta-on #nav,
+body.sta-on #mobileNav { display: none !important; }
+
+/* legacy dashboard dressing replaced by the replica dashboard */
+body.sta-on #dashboard .kpis,
+body.sta-on #dashboard .record-breakdown,
+body.sta-on #dashboard .vibe-metrics,
+body.sta-on #dashboard .vibe-panels,
+body.sta-on #dashboard .right-panels,
+body.sta-on #dashboard .status-grid { display: none !important; }
+
+/* replica pills: scrollable row instead of hidden below xl */
+#staNav { scrollbar-width: none; }
+#staNav::-webkit-scrollbar { display: none; }
+@media (max-width: 1279.98px) {
+  #staNav { display: flex !important; overflow-x: auto; }
+}
